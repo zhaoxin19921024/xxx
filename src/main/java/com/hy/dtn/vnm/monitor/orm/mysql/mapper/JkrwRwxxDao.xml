@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.monitor.orm.mysql.dao.JkrwRwxxDao">
+  <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    <id column="rwbs" jdbcType="VARCHAR" property="rwbs" />
+    <result column="rwmc" jdbcType="VARCHAR" property="rwmc" />
+    <result column="rwlx" jdbcType="VARCHAR" property="rwlx" />
+    <result column="sbip" jdbcType="VARCHAR" property="sbip" />
+    <result column="sbdk" jdbcType="DECIMAL" property="sbdk" />
+    <result column="rwms" jdbcType="VARCHAR" property="rwms" />
+    <result column="rwzt" jdbcType="DECIMAL" property="rwzt" />
+  </resultMap>
+
+
+  <resultMap id="collectionResultMap" type="com.hy.dtn.vnm.biz.bo.JkrwRwxxBo" extends="BaseResultMap">
+    <collection property="zbList" ofType="com.hy.dtn.vnm.biz.bo.JkrwJkzbBo">
+<!--        <id column="rwbs" property="rwbs"></id>-->
+        <result column="zbbs" property="zbbs"></result>
+        <result column="zbmc" property="zbmc"></result>
+    </collection>
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    rwbs, rwmc, rwlx, sbip, sbdk, rwms, rwzt
+  </sql>
+
+  <sql id="Base_Column">
+    a.rwbs, a.rwmc, a.rwlx, a.sbip, a.sbdk, a.rwms, a.rwzt, b.zbbs,c.tmnr as zbmc
+  </sql>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_jkrw_rwxx
+    where rwbs = #{rwbs,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_jkrw_rwxx
+    where rwbs = #{rwbs,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    insert into t_jkrw_rwxx (rwbs, rwmc, rwlx, sbip,
+      sbdk, rwms, rwzt, cjsj)
+    values (#{rwbs,jdbcType=VARCHAR},#{rwmc,jdbcType=VARCHAR}, #{rwlx,jdbcType=VARCHAR}, #{sbip,jdbcType=VARCHAR},
+      #{sbdk,jdbcType=DECIMAL}, #{rwms,jdbcType=VARCHAR}, 0, now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    insert into t_jkrw_rwxx
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rwmc != null">
+        rwmc,
+      </if>
+      <if test="rwlx != null">
+        rwlx,
+      </if>
+      <if test="sbip != null">
+        sbip,
+      </if>
+      <if test="sbdk != null">
+        sbdk,
+      </if>
+      <if test="rwms != null">
+        rwms,
+      </if>
+      <if test="rwzt != null">
+        rwzt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rwmc != null">
+        #{rwmc,jdbcType=VARCHAR},
+      </if>
+      <if test="rwlx != null">
+        #{rwlx,jdbcType=VARCHAR},
+      </if>
+      <if test="sbip != null">
+        #{sbip,jdbcType=VARCHAR},
+      </if>
+      <if test="sbdk != null">
+        #{sbdk,jdbcType=DECIMAL},
+      </if>
+      <if test="rwms != null">
+        #{rwms,jdbcType=VARCHAR},
+      </if>
+      <if test="rwzt != null">
+        #{rwzt,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    update t_jkrw_rwxx
+    <set>
+      <if test="rwmc != null">
+        rwmc = #{rwmc,jdbcType=VARCHAR},
+      </if>
+      <if test="rwlx != null">
+        rwlx = #{rwlx,jdbcType=VARCHAR},
+      </if>
+      <if test="sbip != null">
+        sbip = #{sbip,jdbcType=VARCHAR},
+      </if>
+      <if test="sbdk != null">
+        sbdk = #{sbdk,jdbcType=DECIMAL},
+      </if>
+      <if test="rwms != null">
+        rwms = #{rwms,jdbcType=VARCHAR},
+      </if>
+      <if test="rwzt != null">
+        rwzt = #{rwzt,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where rwbs = #{rwbs,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    update t_jkrw_rwxx
+    set rwmc = #{rwmc,jdbcType=VARCHAR},
+      rwlx = #{rwlx,jdbcType=VARCHAR},
+      sbip = #{sbip,jdbcType=VARCHAR},
+      sbdk = #{sbdk,jdbcType=DECIMAL},
+      rwms = #{rwms,jdbcType=VARCHAR}
+    where rwbs = #{rwbs,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getJkrwList" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj" resultMap="collectionResultMap">
+    select
+    <include refid="Base_Column" />
+    from t_jkrw_rwxx a
+    left join
+    t_jkrw_jkzb b
+    on a.rwbs = b.rwbs
+    left join
+    t_sjzd_sjzdtm c
+    on b.zbbs = c.tmbs and c.zdbs = "zblx"
+    <where>
+        1=1
+        <if test="rwmc != null and rwmc != ''">
+           and  rwmc like concat('%',#{rwmc,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="rwlx != null ">
+           and  rwlx = #{rwlx,jdbcType=VARCHAR}
+        </if>
+    </where>
+    order by cjsj
+  </select>
+
+  <update id="updateRwztByRwbs" parameterType="com.hy.dtn.vnm.biz.vo.JkgcZbServerVo">
+    update t_jkrw_rwxx set
+    rwzt = (
+        CASE WHEN #{startOrStop} = 'stop' THEN
+          0
+          ELSE
+          1
+          END
+    )
+    where rwbs in
+    <foreach collection="taskList" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </update>
+
+
+</mapper>

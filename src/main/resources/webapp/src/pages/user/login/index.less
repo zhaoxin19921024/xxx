@@ -1,0 +1,200 @@
+@import '~antd/es/style/themes/default.less';
+
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../assets/login/login-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  overflow: hidden;
+}
+
+.lang {
+  width: 100%;
+  height: 40px;
+  line-height: 44px;
+  text-align: right;
+  :global(.ant-dropdown-trigger) {
+    margin-right: 24px;
+  }
+}
+
+.content {
+  flex: 1;
+  /*width: 536px;
+  height: 384px;*/
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  margin-left: -268px;
+  margin-top: -190px;
+  text-align: center;
+}
+
+@media (min-width: @screen-md-min) {
+  .container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../../assets/login/login-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    overflow: hidden;
+  }
+
+  /*.content {
+    padding: 32px 0 24px;
+  }*/
+}
+
+.top {
+  text-align: center;
+}
+
+.header {
+  height: 100px;
+  a {
+    text-decoration: none;
+  }
+}
+
+.logo {
+  height: 44px;
+  margin-right: 16px;
+  vertical-align: top;
+}
+
+.title {
+  position: relative;
+  top: 2px;
+  color: @heading-color;
+  font-weight: 600;
+  font-size: 33px;
+  font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.desc {
+  margin-top: 12px;
+  margin-bottom: 40px;
+  color: @text-color-secondary;
+  font-size: @font-size-base;
+}
+
+.main {
+  background: url('../../../assets/login/login_input_bg.png') no-repeat center;
+  background-size: auto;
+  overflow: hidden;
+  align-items: center;
+  width: 536px;
+  height: 380px;
+  margin: auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 100%;
+    max-width: 536px;
+  }
+
+  :global {
+    .@{ant-prefix}-tabs-nav-list {
+      margin: auto;
+      font-size: 16rpx;
+    }
+  }
+
+  .icon {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .other {
+    margin-top: 24px;
+    line-height: 22px;
+    text-align: left;
+    .register {
+      float: right;
+    }
+  }
+
+  .prefixIcon {
+    color: @primary-color;
+    font-size: @font-size-base;
+  }
+
+  .pwdInput{
+    position: relative;
+    background-color: transparent !important;
+    color:#0A6CBD;
+    border: 0;
+    width: 70%;
+    margin: auto;
+    height:68px;
+  }
+
+  input{
+    background:none !important;
+    color: #0A6CBD !important;
+    outline:none;
+    border: 0;
+  }
+
+  :global {
+    .@{ant-prefix}-form-item-control-input {
+      min-height: 45px !important;
+    }
+  }
+
+  .usernameInput span, .pwdInput span, .usernameInput span:hover, .pwdInput span:hover{
+    background-color: transparent !important;
+    border:0;
+    color: #3056A2;
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  .usernameInput>input{
+    background:none;
+    border:0;
+  }
+
+  .usernameInput{
+    position: relative;
+    background-color: transparent !important;
+    color:#0A6CBD;
+    border: 0;
+    width: 70%;
+    margin: 100px auto 0;
+  }
+
+  input:-webkit-autofill{
+    -webkit-text-fill-color: #0A6CBD !important;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    background:transparent;
+    background-image: none;
+    transition: background-color 50000s ease-in-out 0s;
+  }
+}
+
+.foot{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+
+  :global {
+    .@{ant-prefix}-pro-global-footer-copyright {
+      color: #0A6CBD !important;
+    }
+  }
+}
+
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.monitor.orm.mysql.dao.JkgcGcxxDao">
+  <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.monitor.entity.JkgcZbObj">
+    <id column="gcbs" jdbcType="VARCHAR" property="gcbs" />
+    <result column="gcmc" jdbcType="VARCHAR" property="gcmc" />
+    <result column="cjsj" jdbcType="VARCHAR" property="cjsj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    gcbs, gcmc, cjsj
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_jkgc_gcxx
+    where gcbs = #{gcbs,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_jkgc_gcxx
+    where gcbs = #{gcbs,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert"  parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbObj" >
+    insert into t_jkgc_gcxx (gcbs, gcmc, cjsj)
+    values (#{gcbs,jdbcType=VARCHAR},#{gcmc,jdbcType=VARCHAR}, now())
+  </insert>
+  <insert id="insertSelective"  parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbObj" >
+    insert into t_jkgc_gcxx
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gcmc != null">
+        gcmc,
+      </if>
+      <if test="cjsj != null">
+        cjsj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gcmc != null">
+        #{gcmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cjsj != null">
+        #{cjsj,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbObj">
+    update t_jkgc_gcxx
+    <set>
+      <if test="gcmc != null">
+        gcmc = #{gcmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cjsj != null">
+        cjsj = #{cjsj,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where gcbs = #{gcbs,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbObj">
+    update t_jkgc_gcxx
+    set gcmc = #{gcmc,jdbcType=VARCHAR}
+    where gcbs = #{gcbs,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getJkgcList" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbObj" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_jkgc_gcxx
+    <where>
+      <if test="gcmc != null and gcmc != ''">
+        gcmc like concat('%',#{gcmc,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+    order by cjsj desc
+  </select>
+</mapper>

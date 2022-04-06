@@ -1,0 +1,155 @@
+spring:
+  application:
+    name: @pom.artifactId@
+  mvc:
+    view:
+      suffix: .html
+    static-path-pattern: /**
+    # 默认值为 classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+  resources:
+    static-locations: classpath:/static/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/public/,
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: @maven.rabbitmq.host@
+    port: @maven.rabbitmq.port@
+    username: @maven.rabbitmq.username@
+    password: @maven.rabbitmq.password@
+    # 开启消息确认机制 confirm 异步
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      direct:
+        # 消息开启手动确认
+        acknowledge-mode: manual
+      simple:
+        # 消息开启手动确认
+        acknowledge-mode: manual
+  redis:
+    database: @maven.redis.database@
+    host: @maven.redis.host@
+    port: @maven.redis.port@
+    password: @maven.redis.password@
+    jedis:
+      pool:
+        max-active: @maven.redis.jedis.pool.max-active@
+        max-wait: @maven.redis.jedis.pool.max-wait@
+        max-idle: @maven.redis.jedis.pool.max-idle@
+        min-idle: @maven.redis.jedis.pool.min-idle@
+    timeout: @maven.redis.timeout@
+  datasource:
+    druid:
+      url: @maven.druid.jdbc.url@
+      username: @maven.druid.jdbc.userName@
+      password: @maven.druid.jdbc.password@
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: @maven.druid.jdbc.initialSize@
+      max-active: @maven.druid.jdbc.maxActive@
+      min-idle: @maven.druid.jdbc.minIdle@
+      max-wait: @maven.druid.jdbc.maxWait@
+      validation-query: @maven.druid.jdbc.validationQuery@
+      test-on-borrow: @maven.druid.jdbc.testOnBorrow@
+      test-on-return: @maven.druid.jdbc.testOnReturn@
+      test-while-idle: @maven.druid.jdbc.testWhileIdle@
+      time-between-eviction-runs-millis: @maven.druid.jdbc.timeBetweenEvictionRunsMillis@
+      min-evictable-idle-time-millis: @maven.druid.jdbc.minEvictableIdleTimeMillis@
+      filter:
+        stat:
+          log-slow-sql: false
+          slow-sql-millis: 1000
+          merge-sql: true
+          db-type: mysql
+          enabled: true
+        wall:
+          enabled: @maven.druid.jdbc.filter.wall.enable@
+          db-type: mysql
+          config:
+            #允许一次执行多条语句
+            multi-statement-allow: true
+            #是否进行严格的语法检测
+            strict-syntax-check: false
+            alter-table-allow: false
+            truncate-allow: false
+            drop-table-allow: false
+            none-base-statement-allow: false
+            #检查UPDATE语句是否无where条件，这是有风险的，但不是sql注入类型的风险
+            update-where-none-check: true
+            #SELECT ... INTO OUTFILE 是否允许导出表数据，mysql注入攻击的常见手段，缺省为禁止
+            select-into-outfile-allow: false
+            #是否允许调用Connection.getMetadata方法，此方法调用会暴露数据库的表信息
+            metadata-allow: true
+        log4j:
+          enabled: false
+        log4j2:
+          enabled: false
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+        #可以监控单个url调用的sql列表
+        profile-enable: true
+        #session统计功能
+        session-stat-enable: true
+        #最大session数
+        session-stat-max-count: 100
+      stat-view-servlet:
+        #配置允许访问的地址，当前为内网+本机访问
+        allow: 127.0.0.1,192.168.1.1/24
+        login-username: admin
+        login-password: 123456
+        url-pattern: /druid/*
+        reset-enable: true
+        enabled: true
+      aop-patterns: packages
+  messages:
+    basename: @pom.artifactId@/messages,messages
+    encoding: utf-8
+  jackson:
+    default-property-inclusion: NON_ABSENT
+mybatis-plus:
+  mapper-locations: classpath*:com/hy/dtn/vnm/**/mapper/*.xml
+  typeAliasesPackage: com.hy.dtn.vnm
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+swagger:
+  title: ${spring.application.name}
+  description: "@project.description@API文档"
+  version: 1.0.0
+  enabled: true
+  contact:
+    name: hy
+  # 包路径，按照startsWith作为起点
+  base-package: com.hy.dtn.vnm
+server:
+  port: @maven.service.post@
+  #  error:
+  #    path: /static/index.html
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: opsSession
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  page-size-zero: true
+  #自动检验适合的数据库
+  auto-dialect: true
+  #支持不同数据库，同时使用分页插件
+  auto-runtime-dialect: true
+#插件校验是否启动
+verifyparams:
+  enable: true

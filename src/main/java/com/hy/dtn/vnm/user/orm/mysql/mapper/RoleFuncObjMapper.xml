@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.RoleFuncObjMapper">
+  <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.RoleFuncObjKey">
+    <id column="JSDM" jdbcType="VARCHAR" property="jsdm" />
+    <id column="MKDM" jdbcType="VARCHAR" property="mkdm" />
+  </resultMap>
+  
+  <select id="getFoleFuncList" resultType="java.lang.String">
+    select MKDM from t_xt_jsgn 
+    where JSDM = #{jsdm,jdbcType=VARCHAR} 
+  </select>
+  
+  <delete id="deleteByJsdm">
+    delete from t_xt_jsgn
+    where JSDM = #{jsdm,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleFuncObjKey">
+    delete from t_xt_jsgn
+    where JSDM = #{jsdm,jdbcType=VARCHAR}
+      and MKDM = #{mkdm,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleFuncObjKey">
+    insert into t_xt_jsgn (JSDM, MKDM)
+    values (#{jsdm,jdbcType=VARCHAR}, #{mkdm,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleFuncObjKey">
+    insert into t_xt_jsgn
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jsdm != null">
+        JSDM,
+      </if>
+      <if test="mkdm != null">
+        MKDM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jsdm != null">
+        #{jsdm,jdbcType=VARCHAR},
+      </if>
+      <if test="mkdm != null">
+        #{mkdm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

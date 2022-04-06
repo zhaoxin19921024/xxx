@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.UserRoleObjMapper">
+    <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.UserRoleObjKey">
+        <id column="YHID" jdbcType="VARCHAR" property="yhid"/>
+        <id column="JSDM" jdbcType="VARCHAR" property="jsdm"/>
+    </resultMap>
+
+    <select id="getUserRoleList" resultType="java.lang.String">
+        SELECT JSDM
+        FROM t_xt_yhjs
+        WHERE YHID = #{yhid,jdbcType=VARCHAR}
+  </select>
+
+    <delete id="delUserRole">
+        delete from t_xt_yhjs
+        where YHID = #{yhid,jdbcType=VARCHAR}
+  </delete>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserRoleObjKey">
+        delete from t_xt_yhjs
+        where YHID = #{yhid,jdbcType=VARCHAR}
+        and JSDM = #{jsdm,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert">
+        insert into t_xt_yhjs (YHID, JSDM)
+        values (#{yhid,jdbcType=VARCHAR}, #{jsdm,jdbcType=VARCHAR})
+  </insert>
+
+    <!--  批量插入数据  -->
+    <insert id="insertByList" parameterType="list">
+        <if test="list != null and list.size() > 0">
+            insert into t_xt_yhjs (YHID, JSDM)
+            values
+            <foreach collection="list" index="index" item="item" separator=",">
+                (
+                #{item.yhid},
+                #{item.jsdm}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserRoleObjKey">
+        insert into t_xt_yhjs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="yhid != null">
+                YHID,
+            </if>
+            <if test="jsdm != null">
+                JSDM,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="yhid != null">
+                #{yhid,jdbcType=VARCHAR},
+            </if>
+            <if test="jsdm != null">
+                #{jsdm,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

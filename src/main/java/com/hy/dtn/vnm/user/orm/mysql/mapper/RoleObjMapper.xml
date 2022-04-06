@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.RoleObjMapper">
+    <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.RoleObj">
+        <id column="JSDM" jdbcType="VARCHAR" property="jsdm"/>
+        <result column="JSMC" jdbcType="VARCHAR" property="jsmc"/>
+        <result column="JSSM" jdbcType="VARCHAR" property="jssm"/>
+        <result column="XSSX" jdbcType="DECIMAL" property="xssx"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    JSDM, JSMC, JSSM, XSSX
+  </sql>
+
+    <select id="getAllRoleList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_js
+        order by XSSX asc
+    </select>
+
+    <select id="getMaxXssx" resultType="java.lang.Integer">
+      SELECT Max(XSSX)  
+      FROM t_xt_js
+  </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_js
+        where JSDM = #{jsdm,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_xt_js
+    where JSDM = #{jsdm,jdbcType=VARCHAR} 
+  </delete>
+
+    <insert id="insert" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleObj">
+    insert into t_xt_js (JSDM, JSMC, JSSM, 
+      XSSX)
+    values (#{jsdm,jdbcType=VARCHAR}, #{jsmc,jdbcType=VARCHAR}, #{jssm,jdbcType=VARCHAR}, 
+      #{xssx,jdbcType=DECIMAL})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleObj">
+        insert into t_xt_js
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jsdm != null">
+                JSDM,
+            </if>
+            <if test="jsmc != null">
+                JSMC,
+            </if>
+            <if test="jssm != null">
+                JSSM,
+            </if>
+            <if test="xssx != null">
+                XSSX,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jsdm != null">
+                #{jsdm,jdbcType=VARCHAR},
+            </if>
+            <if test="jsmc != null">
+                #{jsmc,jdbcType=VARCHAR},
+            </if>
+            <if test="jssm != null">
+                #{jssm,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                #{xssx,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleObj">
+        update t_xt_js
+        <set>
+            <if test="jsmc != null">
+                JSMC = #{jsmc,jdbcType=VARCHAR},
+            </if>
+            <if test="jssm != null">
+                JSSM = #{jssm,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                XSSX = #{xssx,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where JSDM = #{jsdm,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.RoleObj">
+    update t_xt_js
+    set JSMC = #{jsmc,jdbcType=VARCHAR},
+      JSSM = #{jssm,jdbcType=VARCHAR},
+      XSSX = #{xssx,jdbcType=DECIMAL}
+    where JSDM = #{jsdm,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.monitor.orm.mysql.dao.JkrwJkzbDao">
+  <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.monitor.entity.JkrwJkzbObj">
+    <id column="zbbs" jdbcType="VARCHAR" property="zbbs" />
+    <id column="rwbs" jdbcType="VARCHAR" property="rwbs" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwJkzbObj">
+    delete from t_jkrw_jkzb
+    where rwbs = #{rwbs,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwRwxxObj">
+    insert into t_jkrw_jkzb (rwbs,zbbs)
+    values
+    <foreach collection="rwzbList" item="item" open="(" separator="),(" close=")">
+      #{rwbs,jdbcType=VARCHAR},#{item}
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkrwJkzbObj">
+    insert into t_jkrw_jkzb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rwbs != null">
+        rwbs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rwbs != null">
+        #{rwbs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

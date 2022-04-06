@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.UserObjMapper">
+    <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.UserObj">
+        <id column="YHID" jdbcType="VARCHAR" property="yhid"/>
+        <result column="YHXM" jdbcType="VARCHAR" property="yhxm"/>
+        <result column="DLM" jdbcType="VARCHAR" property="dlm"/>
+        <result column="DLMM" jdbcType="VARCHAR" property="dlmm"/>
+        <result column="CSNY" jdbcType="DATE" property="csny"/>
+        <result column="ZW" jdbcType="VARCHAR" property="zw"/>
+        <result column="SFZ" jdbcType="VARCHAR" property="sfz"/>
+        <result column="XB" jdbcType="VARCHAR" property="xb"/>
+        <result column="LXDH" jdbcType="VARCHAR" property="lxdh"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    YHID, YHXM, DLM, DLMM, CSNY, ZW, SFZ, XB, LXDH
+  </sql>
+
+    <select id="getAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_xtyh
+    </select>
+
+    <!-- 根据条件参数查询列表 -->
+    <select id="findXtXtyhByCondition" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM t_xt_xtyh WHERE 1 = 1
+        <if test="yhxm != null and yhxm != ''">
+            AND YHXM LIKE CONCAT('%', #{yhxm}, '%')
+        </if>
+        <if test="dlm != null and dlm != ''">
+            AND DLM LIKE CONCAT('%', #{dlm}, '%')
+        </if>
+        <if test="dlmm != null and dlmm != ''">
+            AND DLMM LIKE CONCAT('%', #{dlmm}, '%')
+        </if>
+        <if test="csny != null">
+            AND CSNY = #{csny}
+        </if>
+        <if test="zw != null and zw != ''">
+            AND ZW LIKE CONCAT('%', #{zw}, '%')
+        </if>
+        <if test="sfz != null and sfz != ''">
+            AND SFZ LIKE CONCAT('%', #{sfz}, '%')
+        </if>
+        <if test="xb != null and xb != ''">
+            AND XB LIKE CONCAT('%', #{xb}, '%')
+        </if>
+        <if test="lxdh != null and lxdh != ''">
+            AND LXDH LIKE CONCAT('%', #{lxdh}, '%')
+        </if>
+        ORDER BY YHXM
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_xtyh
+        where YHID = #{yhid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKeyAndDlm" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_xtyh
+        where YHID = #{yhid,jdbcType=VARCHAR}
+        or DLM = #{dlm,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByDlm" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_xtyh
+        where DLM = #{dlm,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete from t_xt_xtyh
+        where YHID = #{yhid,jdbcType=VARCHAR}
+    </delete>
+
+    <!--  批量删除  -->
+    <delete id="deleteByPrimaryKeyList" parameterType="list">
+        delete from t_xt_xtyh
+        where YHID IN
+        <foreach collection="list" index="index" item="yhid" open="(" separator="," close=")">
+            #{yhid}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserObj">
+    insert into t_xt_xtyh (YHID, YHXM, DLM, DLMM, CSNY, ZW, SFZ, XB, LXDH)
+    values (#{yhid,jdbcType=VARCHAR}, #{yhxm,jdbcType=VARCHAR}, #{dlm,jdbcType=VARCHAR}, #{dlmm,jdbcType=VARCHAR},
+    		#{csny,jdbcType=DATE}, #{zw,jdbcType=VARCHAR}, #{sfz,jdbcType=VARCHAR},
+      		#{xb,jdbcType=VARCHAR}, #{lxdh,jdbcType=VARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserObj">
+        insert into t_xt_xtyh
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="yhid != null">
+                YHID,
+            </if>
+            <if test="yhxm != null">
+                YHXM,
+            </if>
+            <if test="dlm != null">
+                DLM,
+            </if>
+            <if test="dlmm != null">
+                DLMM,
+            </if>
+            <if test="csny != null">
+                CSNY,
+            </if>
+            <if test="zw != null">
+                ZW,
+            </if>
+            <if test="sfz != null">
+                SFZ,
+            </if>
+            <if test="xb != null">
+                XB,
+            </if>
+            <if test="lxdh != null">
+                LXDH,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="yhid != null">
+                #{yhid,jdbcType=VARCHAR},
+            </if>
+            <if test="yhxm != null">
+                #{yhxm,jdbcType=VARCHAR},
+            </if>
+            <if test="dlm != null">
+                #{dlm,jdbcType=VARCHAR},
+            </if>
+            <if test="dlmm != null">
+                #{dlmm,jdbcType=VARCHAR},
+            </if>
+            <if test="csny != null">
+                #{csny,jdbcType=DATE},
+            </if>
+            <if test="zw != null">
+                #{zw,jdbcType=VARCHAR},
+            </if>
+            <if test="sfz != null">
+                #{sfz,jdbcType=VARCHAR},
+            </if>
+            <if test="xb != null">
+                #{xb,jdbcType=VARCHAR},
+            </if>
+            <if test="lxdh != null">
+                #{lxdh,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserObj">
+        update t_xt_xtyh
+        <set>
+            <if test="yhxm != null">
+                YHXM = #{yhxm,jdbcType=VARCHAR},
+            </if>
+            <if test="csny != null">
+                CSNY = #{csny,jdbcType=DATE},
+            </if>
+            <if test="zw != null">
+                ZW = #{zw,jdbcType=VARCHAR},
+            </if>
+            <if test="sfz != null">
+                SFZ = #{sfz,jdbcType=VARCHAR},
+            </if>
+            <if test="xb != null">
+                XB = #{xb,jdbcType=VARCHAR},
+            </if>
+            <if test="lxdh != null">
+                LXDH = #{lxdh,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where YHID = #{yhid,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.UserObj">
+    update t_xt_xtyh
+    set 
+      YHXM = #{yhxm,jdbcType=VARCHAR},
+      CSNY = #{csny,jdbcType=DATE},
+      ZW = #{zw,jdbcType=VARCHAR},
+      SFZ = #{sfz,jdbcType=VARCHAR},
+      XB = #{xb,jdbcType=VARCHAR},
+      LXDH = #{lxdh,jdbcType=VARCHAR}
+    where YHID = #{yhid,jdbcType=VARCHAR}
+  </update>
+
+    <update id="changePsd">
+    update t_xt_xtyh
+    set 
+      DLMM = #{newpsd,jdbcType=VARCHAR}
+    where YHID = #{yhid,jdbcType=VARCHAR}
+  </update>
+</mapper>

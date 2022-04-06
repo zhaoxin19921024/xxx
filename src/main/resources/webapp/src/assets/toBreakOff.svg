@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="路径_2415" data-name="路径 2415" d="M20-4h0A20,20,0,0,1,0-24,20,20,0,0,1,20-44,20,20,0,0,1,40-24h0A20.023,20.023,0,0,1,20-4Zm0-17.643,8.247,8.253L30.6-15.747,22.357-24l8.25-8.25L28.25-34.607,20-26.357l-8.25-8.25L9.393-32.25,17.643-24l-8.25,8.25,2.357,2.357L20-21.64Z" transform="translate(0 44)" fill="#f60a32"/>
+    </clipPath>
+  </defs>
+  <g id="链路断开" transform="translate(0 44)">
+    <g id="组_5476" data-name="组 5476" transform="translate(0 -44)" clip-path="url(#clip-path)">
+      <path id="路径_2414" data-name="路径 2414" d="M-5-49H44.091V.091H-5Z" transform="translate(0.455 44.455)" fill="#f60a32"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.FuncObjMapper">
+    <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.FuncObj">
+        <id column="MKDM" jdbcType="VARCHAR" property="mkdm"/>
+        <result column="MKMC" jdbcType="VARCHAR" property="mkmc"/>
+        <result column="XSSX" jdbcType="DECIMAL" property="xssx"/>
+        <result column="LYB" jdbcType="VARCHAR" property="lyb"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MKDM
+        , MKMC, XSSX,LYB
+    </sql>
+
+    <select id="getAllFunc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_gnmk
+        order by XSSX asc
+    </select>
+
+    <select id="getUserFunc" resultMap="BaseResultMap">
+        select a.MKDM,
+               a.MKMC,
+               a.XSSX,
+               a.LYB
+        from t_xt_gnmk a,
+             t_xt_yhjs b,
+             t_xt_jsgn c
+        where b.YHID = #{yhid,jdbcType=VARCHAR}
+          and c.JSDM = b.JSDM
+          and a.MKDM = c.MKDM
+        GROUP BY a.MKDM
+        order by a.MKDM asc
+    </select>
+
+    <select id="getRoleFunc" resultMap="BaseResultMap">
+        select a.MKDM,
+               a.MKMC,
+               a.XSSX,
+               a.LYB
+        from t_xt_gnmk a,
+             t_xt_jsgn b
+        where b.JSDM = #{jsdm,jdbcType=VARCHAR}
+          and a.MKDM = b.MKDM
+        order by a.MKDM asc
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xt_gnmk
+        where MKDM = #{mkdm,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        delete
+        from t_xt_gnmk
+        where MKDM = #{mkdm,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.FuncObj">
+        insert into t_xt_gnmk (MKDM, MKMC, XSSX,LYB)
+        values (#{mkdm,jdbcType=VARCHAR}, #{mkmc,jdbcType=VARCHAR}, #{xssx,jdbcType=DECIMAL}, #{lyb,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.FuncObj">
+        insert into t_xt_gnmk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mkdm != null">
+                MKDM,
+            </if>
+            <if test="mkmc != null">
+                MKMC,
+            </if>
+            <if test="xssx != null">
+                XSSX,
+            </if>
+            <if test="lyb != null">
+                LYB,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mkdm != null">
+                #{mkdm,jdbcType=VARCHAR},
+            </if>
+            <if test="mkmc != null">
+                #{mkmc,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                #{xssx,jdbcType=DECIMAL},
+            </if>
+            <if test="lyb != null">
+                #{lyb,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.FuncObj">
+        update t_xt_gnmk
+        <set>
+            <if test="mkmc != null">
+                MKMC = #{mkmc,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                XSSX = #{xssx,jdbcType=DECIMAL},
+            </if>
+            <if test="lyb != null">
+                LYB = #{lyb,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where MKDM = #{mkdm,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.FuncObj">
+        update t_xt_gnmk
+        set MKMC = #{mkmc,jdbcType=VARCHAR},
+            XSSX = #{xssx,jdbcType=DECIMAL},
+            LYB = #{lyb,jdbcType=VARCHAR}
+        where MKDM = #{mkdm,jdbcType=VARCHAR}
+    </update>
+</mapper>

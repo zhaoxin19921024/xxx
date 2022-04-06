@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.monitor.orm.mysql.dao.JkgcZbtxDao">
+  <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj">
+    <id column="txbs" jdbcType="VARCHAR" property="txbs" />
+    <result column="txmc" jdbcType="VARCHAR" property="txmc" />
+    <result column="gcbs" jdbcType="VARCHAR" property="gcbs" />
+    <result column="zbbs" jdbcType="INTEGER" property="zbbs" />
+    <result column="rwlx" jdbcType="INTEGER" property="rwlx" />
+  </resultMap>
+
+
+
+  <sql id="Base_Column_List">
+    txbs, txmc, gcbs, zbbs, rwlx
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_jkgc_zbtx
+    where zbbs = #{zbbs,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_jkgc_zbtx
+    where txbs = #{txbs,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj" >
+    insert into t_jkgc_zbtx ( txbs, txmc, gcbs, zbbs, rwlx)
+    values (#{txbs,jdbcType=VARCHAR},#{txmc,jdbcType=VARCHAR},#{gcbs,jdbcType=VARCHAR},#{zbbs,jdbcType=INTEGER},#{rwlx,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj" >
+    insert into t_jkgc_zbtx
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gcbs != null">
+        gcbs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gcbs != null">
+        #{gcbs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj">
+    update t_jkgc_zbtx
+    <set>
+      <if test="gcbs != null">
+        gcbs = #{gcbs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where zbbs = #{zbbs,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj">
+    update t_jkgc_zbtx
+    set gcbs = #{gcbs,jdbcType=VARCHAR}
+    where zbbs = #{zbbs,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByGcbs" parameterType="java.lang.String" resultType="com.hy.dtn.vnm.monitor.entity.JkgcZbtxObj">
+    select
+    <include refid="Base_Column_List" />
+    from t_jkgc_zbtx
+
+    where gcbs = #{gcbs,jdbcType=VARCHAR}
+  </select>
+</mapper>

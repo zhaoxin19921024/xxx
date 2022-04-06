@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- t_xt_czrz -->
+<mapper namespace="com.hy.dtn.vnm.orm.mysql.dao.XtCzrzDao">
+
+    <!-- 字段映射 -->
+    <resultMap id="xtCzrzMap" type="com.hy.dtn.vnm.orm.mysql.model.XtCzrz">
+        <id column="LID" property="lid" jdbcType="VARCHAR"/>
+        <result column="UID" property="uid" jdbcType="VARCHAR"/>
+        <result column="XM" property="xm" jdbcType="VARCHAR"/>
+        <result column="TM" property="tm" jdbcType="TIMESTAMP"/>
+        <result column="LX" property="lx" jdbcType="VARCHAR"/>
+        <result column="NR" property="nr" jdbcType="VARCHAR"/>
+        <result column="JG" property="jg" jdbcType="DECIMAL"/>
+        <result column="SBYY" property="sbyy" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 表查询字段 -->
+    <sql id="allColumns">
+        LID, UID, XM, TM, LX, NR, JG, SBYY
+    </sql>
+
+    <!-- 查询所有 -->
+    <select id="findXtCzrzAll" resultMap="xtCzrzMap">
+        SELECT
+        <include refid="allColumns"/>
+        FROM t_xt_czrz
+    </select>
+
+    <!-- 根据条件参数查询列表 -->
+    <select id="findXtCzrzByCondition" resultMap="xtCzrzMap" parameterType="map">
+        SELECT
+        <include refid="allColumns"/>
+        FROM t_xt_czrz WHERE 1 = 1
+        <if test="uid != null and uid != ''">
+            AND UID LIKE CONCAT('%', #{uid}, '%')
+        </if>
+        <if test="xm != null and xm != ''">
+            AND XM LIKE CONCAT('%', #{xm}, '%')
+        </if>
+        <if test="tm != null">
+            AND TM = #{tm}
+        </if>
+        <if test="lx != null and lx != ''">
+            AND LX LIKE CONCAT('%', #{lx}, '%')
+        </if>
+        <if test="nr != null and nr != ''">
+            AND NR LIKE CONCAT('%', #{nr}, '%')
+        </if>
+        <if test="jg != null">
+            AND JG = #{jg}
+        </if>
+        <if test="sbyy != null and sbyy != ''">
+            AND SBYY LIKE CONCAT('%', #{sbyy}, '%')
+        </if>
+    </select>
+
+    <!-- 根据主键查询信息 -->
+    <select id="findXtCzrzByIds" resultMap="xtCzrzMap" parameterType="list">
+        SELECT
+        <include refid="allColumns"/>
+        FROM t_xt_czrz WHERE LID IN
+        <foreach collection="list" index="index" item="lid" open="(" separator="," close=")">
+            #{lid}
+        </foreach>
+    </select>
+
+    <!-- 新增信息 -->
+    <insert id="addXtCzrz">
+        INSERT INTO t_xt_czrz (
+            LID, UID, XM, TM, LX, NR, JG, SBYY
+        ) VALUES (
+            #{lid},
+            #{uid},
+            #{xm},
+            #{tm},
+            #{lx},
+            #{nr},
+            #{jg},
+            #{sbyy}
+        )
+    </insert>
+
+    <!-- 批量新增信息 -->
+    <insert id="addXtCzrzs" parameterType="list">
+        INSERT INTO t_xt_czrz (
+        LID, UID, XM, TM, LX, NR, JG, SBYY
+        ) VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.lid},
+            #{item.uid},
+            #{item.xm},
+            #{item.tm},
+            #{item.lx},
+            #{item.nr},
+            #{item.jg},
+            #{item.sbyy}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 修改信息 -->
+    <update id="updateXtCzrz">
+        UPDATE t_xt_czrz
+        <set>
+            <if test="uid != null">
+                UID = #{uid},
+            </if>
+            <if test="xm != null">
+                XM = #{xm},
+            </if>
+            <if test="tm != null">
+                TM = #{tm},
+            </if>
+            <if test="lx != null">
+                LX = #{lx},
+            </if>
+            <if test="nr != null">
+                NR = #{nr},
+            </if>
+            <if test="jg != null">
+                JG = #{jg},
+            </if>
+            <if test="sbyy != null">
+                SBYY = #{sbyy}
+            </if>
+        </set>
+        WHERE LID = #{lid}
+    </update>
+
+    <!-- 批量修改信息 -->
+    <update id="updateXtCzrzs" parameterType="list">
+        <foreach collection="list" index="index" item="item" separator=";">
+            UPDATE t_xt_czrz
+            <set>
+                <if test="item.uid != null">
+                    UID = #{item.uid},
+                </if>
+                <if test="item.xm != null">
+                    XM = #{item.xm},
+                </if>
+                <if test="item.tm != null">
+                    TM = #{item.tm},
+                </if>
+                <if test="item.lx != null">
+                    LX = #{item.lx},
+                </if>
+                <if test="item.nr != null">
+                    NR = #{item.nr},
+                </if>
+                <if test="item.jg != null">
+                    JG = #{item.jg},
+                </if>
+                <if test="item.sbyy != null">
+                    SBYY = #{item.sbyy}
+                </if>
+            </set>
+            WHERE LID = #{item.lid}
+        </foreach>
+    </update>
+
+    <!-- 根据主键删除 -->
+    <delete id="deleteXtCzrzById" parameterType="string">
+        DELETE FROM t_xt_czrz WHERE LID = #{lid}
+    </delete>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="deleteXtCzrzByIds" parameterType="list">
+        DELETE FROM t_xt_czrz WHERE LID IN
+        <foreach collection="list" index="index" item="lid" open="(" separator="," close=")">
+            #{lid}
+        </foreach>
+    </delete>
+</mapper>

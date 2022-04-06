@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.hy.dtn</groupId>
+    <artifactId>vnm</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>vnm</name>
+    <description>虚拟化网络监控平台</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <!--配置模块端口号-->
+        <maven.service.post>8095</maven.service.post>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <!-- 数据库相关-->
+        <druid.version>1.2.1</druid.version>
+        <druid-spring-boot-starter.version>1.2.1</druid-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.3.1</mybatis-plus-boot-starter.version>
+        <pagehelper.version>1.3.0</pagehelper.version>
+        <jsqlparser.version>3.2</jsqlparser.version>
+        <!-- 文档 -->
+        <swagger-spring-boot-starter.version>1.9.1.RELEASE</swagger-spring-boot-starter.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <hutool-all.version>5.4.5</hutool-all.version>
+        <fastjson.version>1.2.74</fastjson.version>
+        <cglib.version>3.3.0</cglib.version>
+        <testng.version>7.0.0</testng.version>
+        <!-- rabbitmq -->
+        <rabbitmq.host>172.171.50.62</rabbitmq.host>
+        <rabbitmq.port>5672</rabbitmq.port>
+        <rabbitmq.username>root</rabbitmq.username>
+        <rabbitmq.password>123456</rabbitmq.password>
+        <elasticsearch.version>7.10.1</elasticsearch.version>
+    </properties>
+
+    <dependencies>
+
+<!--        <dependency>-->
+<!--            <groupId>com.hy</groupId>-->
+<!--            <artifactId>middleware</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis-spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--    swagger文档    -->
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+            <version>${swagger-spring-boot-starter.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--连接池配置-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <!--分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--配置日志-->
+        <!-- logback start -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <!-- logback end -->
+
+        <!--配置fastJson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid-spring-boot-starter.version}</version>
+        </dependency>
+        <!-- Apache 为反射和自省提供了一个易于使用但灵活的包装器 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.13</version>
+        </dependency>
+        <!--   websocket相关依赖     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <profiles>
+        <!--开发环境-->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!--项目jar包的名称-->
+                <maven.project.docker.name>${project.artifactId}-${project.version}</maven.project.docker.name>
+                <!--对应的端口-->
+                <!--对应的端口-->
+                <maven.post>${maven.service.post}</maven.post>
+
+                <!--数据库相关-->
+                <!-- <maven.druid.jdbc.url>jdbc:mysql://192.168.1.3:3306/uis?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8&amp;useUnicode=true&amp;allowMultiQueries=true -->
+                <!-- </maven.druid.jdbc.url> -->
+                <maven.druid.jdbc.url>jdbc:mysql://172.171.50.62:3306/vnm?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8&amp;useUnicode=true&amp;useSSL=false&amp;nullNamePatternMatchesAll=true&amp;allowPublicKeyRetrieval=true&amp;allowMultiQueries=true</maven.druid.jdbc.url>
+                <maven.druid.jdbc.userName>root</maven.druid.jdbc.userName>
+                <maven.druid.jdbc.password>123456</maven.druid.jdbc.password>
+
+                <maven.druid.jdbc.driverClassName>com.mysql.cj.jdbc.Driver</maven.druid.jdbc.driverClassName>
+                <maven.druid.jdbc.initialSize>1</maven.druid.jdbc.initialSize>
+                <maven.druid.jdbc.maxActive>20</maven.druid.jdbc.maxActive>
+                <maven.druid.jdbc.minIdle>10</maven.druid.jdbc.minIdle>
+                <maven.druid.jdbc.maxWait>60000</maven.druid.jdbc.maxWait>
+                <maven.druid.jdbc.timeBetweenEvictionRunsMillis>20000</maven.druid.jdbc.timeBetweenEvictionRunsMillis>
+                <maven.druid.jdbc.minEvictableIdleTimeMillis>30000</maven.druid.jdbc.minEvictableIdleTimeMillis>
+                <maven.druid.jdbc.validationQuery>SELECT 'x'</maven.druid.jdbc.validationQuery>
+                <maven.druid.jdbc.testWhileIdle>true</maven.druid.jdbc.testWhileIdle>
+                <maven.druid.jdbc.testOnBorrow>false</maven.druid.jdbc.testOnBorrow>
+                <maven.druid.jdbc.testOnReturn>false</maven.druid.jdbc.testOnReturn>
+
+                <maven.druid.jdbc.filter.wall.enable>true</maven.druid.jdbc.filter.wall.enable>
+
+                <!--数据库连接的自动回收机制-->
+                <!--是否自动回收超时连接 -->
+                <maven.druid.jdbc.removeAbandoned>true</maven.druid.jdbc.removeAbandoned>
+                <!--是否在自动回收超时连接的时候打印连接的超时错误-->
+                <maven.druid.jdbc.logAbandoned>true</maven.druid.jdbc.logAbandoned>
+                <!--超时时间(以秒数为单位)-->
+                <maven.druid.jdbc.removeAbandonedTimeout>1800</maven.druid.jdbc.removeAbandonedTimeout>
+
+                <!--redis配置-->
+                <maven.redis.database>0</maven.redis.database>
+                <maven.redis.host>192.168.1.3</maven.redis.host>
+                <maven.redis.port>6379</maven.redis.port>
+                <maven.redis.password>123456</maven.redis.password>
+                <maven.redis.jedis.pool.max-active>1024</maven.redis.jedis.pool.max-active>
+                <maven.redis.jedis.pool.max-wait>-1ms</maven.redis.jedis.pool.max-wait>
+                <maven.redis.jedis.pool.max-idle>300</maven.redis.jedis.pool.max-idle>
+                <maven.redis.jedis.pool.min-idle>0</maven.redis.jedis.pool.min-idle>
+                <maven.redis.timeout>10000ms</maven.redis.timeout>
+
+                <!-- rabbitmq 配置 -->
+                <maven.rabbitmq.host>${rabbitmq.host}</maven.rabbitmq.host>
+                <maven.rabbitmq.port>${rabbitmq.port}</maven.rabbitmq.port>
+                <maven.rabbitmq.username>${rabbitmq.username}</maven.rabbitmq.username>
+                <maven.rabbitmq.password>${rabbitmq.password}</maven.rabbitmq.password>
+
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <!--项目jar包的名称-->
+                <maven.project.docker.name>${project.artifactId}-${project.version}</maven.project.docker.name>
+                <!--对应的端口-->
+                <maven.post>${maven.service.post}</maven.post>
+
+                <!--数据库相关-->
+                <maven.druid.jdbc.url>jdbc:mysql://192.168.1.3:3306/uis?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8&amp;useUnicode=true&amp;allowMultiQueries=true
+                </maven.druid.jdbc.url>
+                <!--                <maven.druid.jdbc.url>jdbc:mysql://127.0.0.1:3306/test1021?serverTimezone=Asia/Shanghai&amp;characterEncoding=utf8&amp;useUnicode=true&amp;useSSL=false&amp;nullNamePatternMatchesAll=true&amp;allowPublicKeyRetrieval=true&amp;allowMultiQueries=true-->
+                <maven.druid.jdbc.userName>root</maven.druid.jdbc.userName>
+                <maven.druid.jdbc.password>123456</maven.druid.jdbc.password>
+
+                <maven.druid.jdbc.driverClassName>com.mysql.cj.jdbc.Driver</maven.druid.jdbc.driverClassName>
+                <maven.druid.jdbc.initialSize>1</maven.druid.jdbc.initialSize>
+                <maven.druid.jdbc.maxActive>20</maven.druid.jdbc.maxActive>
+                <maven.druid.jdbc.minIdle>10</maven.druid.jdbc.minIdle>
+                <maven.druid.jdbc.maxWait>60000</maven.druid.jdbc.maxWait>
+                <maven.druid.jdbc.timeBetweenEvictionRunsMillis>20000</maven.druid.jdbc.timeBetweenEvictionRunsMillis>
+                <maven.druid.jdbc.minEvictableIdleTimeMillis>30000</maven.druid.jdbc.minEvictableIdleTimeMillis>
+                <maven.druid.jdbc.validationQuery>SELECT 'x'</maven.druid.jdbc.validationQuery>
+                <maven.druid.jdbc.testWhileIdle>true</maven.druid.jdbc.testWhileIdle>
+                <maven.druid.jdbc.testOnBorrow>false</maven.druid.jdbc.testOnBorrow>
+                <maven.druid.jdbc.testOnReturn>false</maven.druid.jdbc.testOnReturn>
+
+                <maven.druid.jdbc.filter.wall.enable>true</maven.druid.jdbc.filter.wall.enable>
+
+                <!--数据库连接的自动回收机制-->
+                <!--是否自动回收超时连接 -->
+                <maven.druid.jdbc.removeAbandoned>true</maven.druid.jdbc.removeAbandoned>
+                <!--是否在自动回收超时连接的时候打印连接的超时错误-->
+                <maven.druid.jdbc.logAbandoned>true</maven.druid.jdbc.logAbandoned>
+                <!--超时时间(以秒数为单位)-->
+                <maven.druid.jdbc.removeAbandonedTimeout>1800</maven.druid.jdbc.removeAbandonedTimeout>
+
+                <!--redis配置-->
+                <maven.redis.database>0</maven.redis.database>
+                <maven.redis.host>192.168.1.3</maven.redis.host>
+                <maven.redis.port>6379</maven.redis.port>
+                <maven.redis.password>123456</maven.redis.password>
+                <maven.redis.jedis.pool.max-active>1024</maven.redis.jedis.pool.max-active>
+                <maven.redis.jedis.pool.max-wait>-1ms</maven.redis.jedis.pool.max-wait>
+                <maven.redis.jedis.pool.max-idle>300</maven.redis.jedis.pool.max-idle>
+                <maven.redis.jedis.pool.min-idle>0</maven.redis.jedis.pool.min-idle>
+                <maven.redis.timeout>10000ms</maven.redis.timeout>
+
+                <!-- rabbitmq 配置 -->
+<!--                <maven.rabbitmq.host>${rabbitmq.host}</maven.rabbitmq.host>-->
+<!--                <maven.rabbitmq.port>${rabbitmq.port}</maven.rabbitmq.port>-->
+<!--                <maven.rabbitmq.username>${rabbitmq.username}</maven.rabbitmq.username>-->
+<!--                <maven.rabbitmq.password>${rabbitmq.password}</maven.rabbitmq.password>-->
+
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <!--        <finalName>${project.artifactId}-${project.version}</finalName>-->
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>webapp/**/*.*</exclude>
+                </excludes>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>*.yml</include>
+                    <include>*.xml</include>
+                    <include>**/*.xml</include>
+                    <include>*.properties</include>
+                    <include>**/*.properties</include>
+                    <include>webapp/build/*.*</include>
+                    <include>static/**</include>
+                </includes>
+                <!--打开资源过滤功能-->
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <!--                <filtering>true</filtering>-->
+            </resource>
+            <!--  将前端代码拷贝至指定路径下  -->
+            <resource>
+                <directory>src/main/resources/webapp/dist</directory>
+                <targetPath>static</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.4.RELEASE</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.github.eirslett</groupId>-->
+<!--                <artifactId>frontend-maven-plugin</artifactId>-->
+<!--                <version>1.10.3</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>install node and yarn</id>-->
+<!--                        <goals>-->
+<!--                            <goal>install-node-and-yarn</goal>-->
+<!--                        </goals>-->
+<!--                        <phase>generate-resources</phase>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>yarn change config</id>-->
+<!--                        <goals>-->
+<!--                            <goal>yarn</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <arguments>config set registry http://192.168.1.3:8081/repository/npm-group/</arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+
+<!--                    <execution>-->
+<!--                        <id>yarn install</id>-->
+<!--                        <goals>-->
+<!--                            <goal>yarn</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <arguments>install</arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    &lt;!&ndash;编译文件&ndash;&gt;-->
+<!--                    <execution>-->
+<!--                        <id>yarn build</id>-->
+<!--                        <goals>-->
+<!--                            <goal>yarn</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <arguments>run build</arguments>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <workingDirectory>src/main/resources/webapp</workingDirectory>-->
+<!--                    <nodeVersion>v12.19.0</nodeVersion>-->
+<!--                    &lt;!&ndash; optional: with node version greater than 4.0.0 will use npm provided by node distribution &ndash;&gt;-->
+<!--                    <npmVersion>6.14.8</npmVersion>-->
+<!--                    <yarnVersion>v1.22.5</yarnVersion>-->
+<!--                    &lt;!&ndash; optional: where to download node and npm from. Defaults to https://nodejs.org/dist/ &ndash;&gt;-->
+<!--                    <nodeDownloadRoot>http://192.168.1.3:8099/node/</nodeDownloadRoot>-->
+<!--                    <yarnDownloadRoot>http://192.168.1.3:8099/yarn/</yarnDownloadRoot>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
+
+<!--    <repositories>-->
+
+<!--        &lt;!&ndash;仓库地址&ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>public</id>-->
+<!--            <name>public</name>-->
+<!--            <url>http://192.168.1.3:8081/repository/java-snapshot/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus</id>-->
+<!--            <name>nexus</name>-->
+<!--            <url>http://192.168.1.3:8081/repository/java-group/</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
+
+<!--    <distributionManagement>-->
+<!--        &lt;!&ndash;正式版本&ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>releases</id>-->
+<!--            <name>releases</name>-->
+<!--            <url>http://192.168.1.3:8081/repository/java-release/</url>-->
+<!--        </repository>-->
+<!--        &lt;!&ndash;开发快照版本&ndash;&gt;-->
+<!--        <snapshotRepository>-->
+<!--            <id>snapshots</id>-->
+<!--            <name>snapshots</name>-->
+<!--            <url>http://192.168.1.3:8081/repository/java-snapshot/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+</project>

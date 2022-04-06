@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hy.dtn.vnm.user.orm.mysql.dao.DictItemObjMapper">
+    <resultMap id="BaseResultMap" type="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+        <id column="ZDBS" jdbcType="VARCHAR" property="zdbs"/>
+        <id column="TMBS" jdbcType="VARCHAR" property="tmbs"/>
+        <result column="TMNR" jdbcType="VARCHAR" property="tmnr"/>
+        <result column="XSSX" jdbcType="DECIMAL" property="xssx"/>
+    </resultMap>
+
+    <resultMap id="Sim_Column_List" type="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+        <result column="TMBS" jdbcType="VARCHAR" property="tmbs"/>
+        <result column="TMNR" jdbcType="VARCHAR" property="tmnr"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    ZDBS, TMBS, TMNR, XSSX
+  </sql>
+
+    <sql id="Sim_Column_List">
+    TMBS, TMNR
+  </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sjzd_sjzdtm
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObjKey"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sjzd_sjzdtm
+        where ZDBS = #{zdbs,jdbcType=VARCHAR}
+        and TMBS = #{tmbs,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByZdbs" resultMap="Sim_Column_List">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sjzd_sjzdtm
+        where ZDBS = #{zdbs,jdbcType=VARCHAR}
+        order by XSSX asc
+    </select>
+
+    <select id="selectByZdbsList" resultMap="Sim_Column_List">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sjzd_sjzdtm
+        <if test="list != null and list.size()>0">
+            where ZDBS IN
+            <foreach collection="list" index="index" item="zdbs" open="(" separator="," close=")">
+                #{zdbs}
+            </foreach>
+        </if>
+        order by XSSX asc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObjKey">
+    delete from t_sjzd_sjzdtm
+    where ZDBS = #{zdbs,jdbcType=VARCHAR}
+      and TMBS = #{tmbs,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+    insert into t_sjzd_sjzdtm (ZDBS, TMBS, TMNR, 
+      XSSX)
+    values (#{zdbs,jdbcType=VARCHAR}, #{tmbs,jdbcType=VARCHAR}, #{tmnr,jdbcType=VARCHAR}, 
+      #{xssx,jdbcType=DECIMAL})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+        insert into t_sjzd_sjzdtm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="zdbs != null">
+                ZDBS,
+            </if>
+            <if test="tmbs != null">
+                TMBS,
+            </if>
+            <if test="tmnr != null">
+                TMNR,
+            </if>
+            <if test="xssx != null">
+                XSSX,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="zdbs != null">
+                #{zdbs,jdbcType=VARCHAR},
+            </if>
+            <if test="tmbs != null">
+                #{tmbs,jdbcType=VARCHAR},
+            </if>
+            <if test="tmnr != null">
+                #{tmnr,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                #{xssx,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+        update t_sjzd_sjzdtm
+        <set>
+            <if test="tmnr != null">
+                TMNR = #{tmnr,jdbcType=VARCHAR},
+            </if>
+            <if test="xssx != null">
+                XSSX = #{xssx,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where ZDBS = #{zdbs,jdbcType=VARCHAR}
+        and TMBS = #{tmbs,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hy.dtn.vnm.user.orm.mysql.model.DictItemObj">
+        update t_sjzd_sjzdtm
+        set TMNR = #{tmnr,jdbcType=VARCHAR},
+          XSSX = #{xssx,jdbcType=DECIMAL}
+        where ZDBS = #{zdbs,jdbcType=VARCHAR}
+          and TMBS = #{tmbs,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

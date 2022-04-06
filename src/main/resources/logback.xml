@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scan:
+当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+scanPeriod:
+设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+debug:
+当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<configuration debug="false" scan="false" scanPeriod="1 seconds">
+    <jmxConfigurator/>
+
+    <springProperty scop="context" name="port" source="server.port"/>
+    <springProperty scop="context" name="name" source="catalina.home"/>
+    <springProperty scop="context" name="rootPath" source="env.rootPath"/>
+    <springProperty scop="context" name="folderName" source="spring.application.name"/>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_HOME" value="${rootPath}/logback/${folderName}-${port}"/>
+    <property name="file_name" value="LOG"/>
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-60.60logger{139}.%method:%L){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!--<property name="FILE_LOG_PATTERN"-->
+              <!--value="%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{356}.%method:%L -%msg%n"/>-->
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>DEBUG</level>-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <Pattern>%highlight(${CONSOLE_LOG_PATTERN})
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SIFT_DEBUG" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <discriminator>
+            <Key>mobile_key</Key>
+            <Key>app_key</Key>
+            <Key>port</Key>
+            <DefaultValue>unknown</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <Prudent>true</Prudent>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${file_name}_DEBUG.%d{yyyy-MM-dd}.%i.log
+                    </FileNamePattern>
+                    <!--日志文件保留天数-->
+                    <MaxHistory>30</MaxHistory>
+                    <!--日志文件最大的大小-->
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <MaxFileSize>10MB</MaxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                </rollingPolicy>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <Pattern>%highlight(${CONSOLE_LOG_PATTERN})</Pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="SIFT_ERROR" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <discriminator>
+            <Key>mobile_key</Key>
+            <Key>app_key</Key>
+            <Key>port</Key>
+            <DefaultValue>unknown</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <Prudent>true</Prudent>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${file_name}_ERROR.%d{yyyy-MM-dd}.%i.log
+                    </FileNamePattern>
+                    <!--日志文件保留天数-->
+                    <MaxHistory>30</MaxHistory>
+                    <!--日志文件最大的大小-->
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <MaxFileSize>10MB</MaxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                </rollingPolicy>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <Pattern>%highlight(${CONSOLE_LOG_PATTERN})</Pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="SIFT_WARN" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <discriminator>
+            <Key>mobile_key</Key>
+            <Key>app_key</Key>
+            <Key>port</Key>
+            <DefaultValue>unknown</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <Prudent>true</Prudent>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${file_name}_WARN.%d{yyyy-MM-dd}.%i.log
+                    </FileNamePattern>
+                    <!--日志文件保留天数-->
+                    <MaxHistory>30</MaxHistory>
+                    <!--日志文件最大的大小-->
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <MaxFileSize>10MB</MaxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                </rollingPolicy>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <Pattern>%highlight(${CONSOLE_LOG_PATTERN})</Pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <appender name="SIFT_INFO" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <discriminator>
+            <Key>mobile_key</Key>
+            <Key>app_key</Key>
+            <Key>port</Key>
+            <DefaultValue>unknown</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <Prudent>true</Prudent>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <FileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${file_name}_INFO.%d{yyyy-MM-dd}.%i.log
+                    </FileNamePattern>
+                    <!--日志文件保留天数-->
+                    <MaxHistory>30</MaxHistory>
+                    <!--日志文件最大的大小-->
+                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                        <MaxFileSize>10MB</MaxFileSize>
+                    </timeBasedFileNamingAndTriggeringPolicy>
+                </rollingPolicy>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <Pattern>%highlight(${CONSOLE_LOG_PATTERN})</Pattern>
+                </layout>
+            </appender>
+        </sift>
+    </appender>
+
+    <!-- 设置指定包名不输出控制台 -->
+
+    <logger name="org.springframework.web.servlet.mvc.method.annotation" level="INFO" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.boot.actuate.endpoint.web.servlet" level="INFO" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.apache.tomcat.util.net.NioEndpoint" level="DEBUG" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="java.io.serialization" level="DEBUG" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+<!--    <logger name="org.apache" level="ERROR" addtivity="false">-->
+<!--        <appender-ref ref="STDOUT"/>-->
+<!--    </logger>-->
+    <logger name="javax.management" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.netflix.discovery" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.sun.jersey" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="nternal.bind" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.mybatis" level="WARN" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.mybatis" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="sun." level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <!--<logger name="com.njzxw.fs.serversys.repository" level="ERROR" addtivity="false">-->
+        <!--<appender-ref ref="STDOUT"/>-->
+    <!--</logger>-->
+    <logger name="io.netty" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="io.lettuce" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.aspectj" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="reactor.core" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.netflix" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="io.netty" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="freemarker.cache" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="nternal.bind.v2.runtime.reflect" level="ERROR" addtivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- 日志输出级别 -->
+    <root level="ALL">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="SIFT_DEBUG"/>
+        <appender-ref ref="SIFT_ERROR"/>
+        <appender-ref ref="SIFT_INFO"/>
+        <appender-ref ref="SIFT_WARN"/>
+    </root>
+
+</configuration>
