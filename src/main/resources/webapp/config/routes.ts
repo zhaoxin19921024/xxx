@@ -22,12 +22,12 @@
     icon: 'crown',
     component: './monitorTask',
   },
-  {
-    path: '/indicatorShow',
-    name: 'indicatorShow',
-    icon: 'crown',
-    component: './indicatorShow',
-  },
+  // {
+  //   path: '/indicatorShow',
+  //   name: 'indicatorShow',
+  //   icon: 'crown',
+  //   component: './indicatorShow',
+  // },
   {
     path: '/trafficManager',
     name: 'trafficManager',
