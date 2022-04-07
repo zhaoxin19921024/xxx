@@ -25,7 +25,7 @@ export async function getInitialState(): Promise<{
       const currentUser = await queryCurrent();
       return currentUser;
     } catch (error) {
-      history.push('/user/login');
+      // history.push('/user/login');
     }
     return undefined;
   };
@@ -52,9 +52,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== '/user/login') {
-        history.push('/user/login');
-      }
+      // if (!initialState?.currentUser && location.pathname !== '/user/login') {
+      //   history.push('/user/login');
+      // }
     },
     menuHeaderRender: undefined,
     // 自定义 403 页面
