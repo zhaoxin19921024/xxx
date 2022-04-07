@@ -1,3 +1,5 @@
+import NetworkConfig from "@/pages/networkConfig";
+
 export default {
   'menu.welcome': '欢迎',
   'menu.more-blocks': '更多区块',
@@ -57,4 +59,5 @@ export default {
   'menu.indicatorShow':'指标项展示',
   'menu.trafficManager':'背景流量管理',
   'menu.probeController':'性能探针控制器',
+  'menu.networkConfig':'中心控制器',
 };

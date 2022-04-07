@@ -40,6 +40,13 @@
     icon: 'crown',
     component: './ProbeController',
   },
+  {
+    path: '/networkConfig',
+    name: 'networkConfig',
+    icon: 'crown',
+    component: './NetworkConfig',
+  },
+
 
   // {
   //   path: '/deviceMonitor',
